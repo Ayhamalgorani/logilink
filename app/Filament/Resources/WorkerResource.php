@@ -4,8 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\WorkerResource\Pages;
 use App\Filament\Resources\WorkerResource\RelationManagers;
+use App\Models\Service;
 use App\Models\Worker;
 use Filament\Forms;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -17,34 +21,40 @@ class WorkerResource extends Resource
 {
     protected static ?string $model = Worker::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('service_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\DatePicker::make('birth_date')
-                    ->required(),
-                Forms\Components\TextInput::make('gender')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('phone_number')
-                    ->tel()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('location')
-                    ->required()
-                    ->maxLength(255),
+                Section::make()
+                ->schema([
+                    Grid::make(2)
+                    ->schema([
+                        Select::make('service_id')
+                        ->options(Service::all()->pluck('name', 'id')),
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('email')
+                            ->email()
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\DatePicker::make('birth_date')
+                            ->required(),
+                        Forms\Components\TextInput::make('gender')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('phone_number')
+                            ->tel()
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('location')
+                            ->required()
+                            ->maxLength(255),
+                    ])
+                ])
+               
             ]);
     }
 
