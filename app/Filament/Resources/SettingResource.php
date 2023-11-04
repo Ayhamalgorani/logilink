@@ -17,20 +17,16 @@ class SettingResource extends Resource
 {
     protected static ?string $model = Setting::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-adjustments-horizontal';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Toggle::make('notification')
-                    ->required(),
-                Forms\Components\Toggle::make('disable')
-                    ->required(),
-                Forms\Components\TextInput::make('about_us')
+                Forms\Components\MarkdownEditor::make('about_us')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('privecy')
+                Forms\Components\MarkdownEditor::make('privecy')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -40,10 +36,6 @@ class SettingResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\IconColumn::make('notification')
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('disable')
-                    ->boolean(),
                 Tables\Columns\TextColumn::make('about_us')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('privecy')

@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('gender')->nullable();
             $table->string('phone_number')->nullable();
             $table->boolean('is_worker')->nullable();
+            $table->boolean('notification')->nullable();
+            $table->boolean('disable')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->hash();
             $table->rememberToken();

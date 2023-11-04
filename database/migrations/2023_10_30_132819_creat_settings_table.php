@@ -13,8 +13,6 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->boolean('notification');
-            $table->boolean('disable');
             $table->string('about_us');
             $table->string('privecy');
             $table->timestamps();
