@@ -1,0 +1,63 @@
+[
+    {
+        "id": 1,
+        "code": "am",
+        "name": "Amman"
+    },
+    {
+        "id": 2,
+        "code": "ir",
+        "name": "Irbid"
+    },
+    {
+        "id": 3,
+        "code": "ma",
+        "name": "Mafraq"
+    },
+    {
+        "id": 4,
+        "code": "je",
+        "name": "Jerash"
+    },
+    {
+        "id": 5,
+        "code": "aj",
+        "name": "Ajloun"
+    },
+    {
+        "id": 6,
+        "code": "ba",
+        "name": "Balqa"
+    },
+    {
+        "id": 7,
+        "code": "mad",
+        "name": "Madaba"
+    },
+    {
+        "id": 8,
+        "code": "ka",
+        "name": "Karak"
+    },
+    {
+        "id": 9,
+        "code": "aq",
+        "name": "Aqaba"
+    },
+    {
+        "id": 10,
+        "code": "man",
+        "name": "Ma'an"
+    },
+    {
+        "id": 11,
+        "code": "ta",
+        "name": "Tafilah"
+    },
+    {
+        "id": 12,
+        "code": "za",
+        "name": "Zarqa"
+    }
+
+    ]
