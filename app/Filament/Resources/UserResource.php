@@ -36,7 +36,13 @@ class UserResource extends Resource
             ->schema([
                 Section::make()
                 ->schema([
-                    Toggle::make('is_worker'),
+                    Grid::make(3)
+                    ->schema([
+                        Toggle::make('is_worker'),
+                        Toggle::make('notification'),
+                        Toggle::make('disable'),
+                    ]),
+                    
                     Grid::make(2)
                         ->schema([
                             TextInput::make('name')
@@ -81,6 +87,10 @@ class UserResource extends Resource
                 TextColumn::make('phone_number')
                     ->searchable(),
                 IconColumn::make('is_worker')
+                    ->boolean(),
+                IconColumn::make('notificaiton')
+                    ->boolean(),
+                IconColumn::make('disable')
                     ->boolean(),
                 TextColumn::make('email_verified_at')
                     ->dateTime()
