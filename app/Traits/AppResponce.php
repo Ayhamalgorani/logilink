@@ -38,6 +38,6 @@ trait AppResponse
 
     public function duplicateVlaue($message = ""): JsonResponse
     {
-        return $this->genRes(null,Response::HTTP_CONFLICT, $message); // HTTP_CONFLICT = 409
+        return $this->genRes(null, Response::HTTP_CONFLICT, $message); // HTTP_CONFLICT = 409
     }
 }
