@@ -7,22 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Worker extends Model
+class Favorite extends Model
 {
     use HasFactory;
 
-    public function service(): BelongsTo
-    {
-        return $this->BelongsTo(Service::class);
-    }
-    
+    protected $guarded = [];
+    protected $with = ['worker'];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function favorite(): HasMany
+    public function worker(): BelongsTo
     {
-        return $this->hasMany(Favorite::class);
+        return $this->belongsTo(Worker::class);
     }
 }

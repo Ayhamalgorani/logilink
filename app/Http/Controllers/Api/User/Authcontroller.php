@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api\User;
 
-use App\Filament\Resources\UserResource;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Traits\AppResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -24,8 +24,7 @@ class Authcontroller extends Controller
 
         if (Auth::attempt($fields)) {
             $user = Auth::user();
-
-            // new LoginNotification($user, 'you logged in successfully');
+            $userNot = User::query()->where('id', auth()->id())->get();
 
             return $this->success([
                 'user' => new UserResource($user),
@@ -53,6 +52,7 @@ class Authcontroller extends Controller
             'phone' => 'required|regex:/^07[789]\d{7}$/',
             'location' => 'required',
             'password' => 'required|string|min:6|confirmed',
+            'terms' => 'required|accepted',
         ]
             , [
                 'email.required' => 'email required.',
@@ -64,6 +64,10 @@ class Authcontroller extends Controller
         $user = new User([
             'name' => $request->name,
             'email' => $request->email,
+            'gender' => $request->gender,
+            'birth_date' => $request->birth_date,
+            'phone_number' => $request->phone,
+            'location' => $request->location,
             'password' => Hash::make($request->password),
             'is_terms_agreed' => true,
         ]);
@@ -102,4 +106,25 @@ class Authcontroller extends Controller
 
         return $this->success($user);
     }
+
+    public function resetPassword(Request $request)
+    {
+        $data = $request->validate([
+            'email' => 'required_without:password|email|exists:users,email',
+            'password' => 'required_without:email|min:6|confirmed',
+        ]);
+
+        $user = User::where('email', $data['email'])->first();
+
+        if (!$user) {
+            return $this->success(false, 'user info updated');
+        }
+
+        $user->password = Hash::make($data['password']);
+        $user->save();
+        return $this->success(true, 'user info updated');    
+    }
+    
+
+
 }

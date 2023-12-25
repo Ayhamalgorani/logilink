@@ -17,11 +17,13 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->date('birth_date')->nullable();
             $table->enum('gender', ['male', 'female']);
-            $table->string('phone_number')->nullable();
+            $table->string('phone_number')->unique()->nullable();
+            $table->string('location')->nullable();
             $table->boolean('is_worker')->nullable();
             $table->boolean('notification')->nullable();
             $table->boolean('disable')->nullable();
             $table->timestamp('email_verified_at')->nullable();
+            $table->boolean('is_terms_agreed')->default(false);
             $table->string('password')->hash();
             $table->rememberToken();
             $table->timestamps();

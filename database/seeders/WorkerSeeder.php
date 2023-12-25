@@ -15,22 +15,19 @@ class WorkerSeeder extends Seeder
      */
     public function run(): void
     {
-        $services = Service::all();
-        Worker::query()->truncate();
-        foreach ($services as $service) {
-            for ($i = 0; $i < 6; $i++) {
 
-                DB::table('workers')->insert([
-                    'service_id' => ($service->id)+$i,
-                    'name' => 'Worker ' . $i,
-                    'email' => 'worker' . $i . '@gmail.com',
+
+        DB::table('workers')->insert(
+            [
+                'service_id' =>1,
+                    'user_id' =>2,
+                    'name' => 'Worker ',
+                    'email' => 'worker' . '@gmail.com',
                     'birth_date' => '1990-01-01',
                     'gender' => 'Male',
                     'phone_number' => '1234567890',
                     'location' => 'Sample Location',
-                ]);
-            }
-            break;
-        }
+            ]
+        );
     }
 }
