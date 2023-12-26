@@ -37,16 +37,20 @@ Route::middleware(['auth:sanctum'])
             });
 
         Route::controller(UserController::class)
+            ->prefix('user')
             ->group(function () {
                 Route::get('/user_profile', 'getUserProfile');
-                Route::post('/worker_profile/{service?}', 'getWorkersByService');
-                Route::put('/edit_favorites/{worker}', 'editFavorite');
+                Route::put('/edit_favorites', 'editFavorite');
                 Route::get('/favorites', 'getFavorite');
+                Route::delete('/delete_acount', 'deleteAcount');
+                Route::put('/update_user_info', 'updateUserInfo');
             });
 
         Route::controller(AppController::class)
             ->group(function () {
+                Route::post('/worker_profile/{service?}', 'getWorkersByService');
                 Route::get('/services', 'getServices');
                 Route::get('/settings', 'getSettings');
+                Route::post('/contact_us', 'creatMessage');
             });
     });

@@ -20,8 +20,6 @@ return new class extends Migration
             $table->string('phone_number')->unique()->nullable();
             $table->string('location')->nullable();
             $table->boolean('is_worker')->nullable();
-            $table->boolean('notification')->nullable();
-            $table->boolean('disable')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->boolean('is_terms_agreed')->default(false);
             $table->string('password')->hash();

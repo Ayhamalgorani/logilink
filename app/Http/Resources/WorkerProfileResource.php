@@ -15,7 +15,10 @@ class WorkerProfileResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'service_id' =>$this->service_id,
+            'service_id' => [
+               'id' => $this->service->id,
+               'name' => $this->service->name,
+            ],
             "name" => $this->name,
             "email" => $this->email,
             "birth_date" => $this->birth_date,
