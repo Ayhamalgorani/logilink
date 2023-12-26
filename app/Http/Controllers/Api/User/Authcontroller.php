@@ -10,22 +10,29 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class Authcontroller extends Controller
 {
     use AppResponse;
 
-    public function login(Request $request): JsonResponse
+    public function userLogin(Request $request): JsonResponse
     {
         $fields = $request->validate([
             'email' => 'required',
             'password' => 'required|string',
         ]);
 
+        $user = User::where('email', $fields['email'])->first();
+
+        if ($user && $user->is_worker) {
+            throw ValidationException::withMessages([
+                'email' => [__('Worker accounts are not allowed to log in.')],
+            ]);
+        }
+
         if (Auth::attempt($fields)) {
             $user = Auth::user();
-            $userNot = User::query()->where('id', auth()->id())->get();
-
             return $this->success([
                 'user' => new UserResource($user),
                 'token' => $user->createToken('app-token')->plainTextToken,
@@ -41,6 +48,7 @@ class Authcontroller extends Controller
         }
         return $this->unauthorized(__("Email or password wrong"));
     }
+
 
     public function register(Request $request)
     {
@@ -122,9 +130,7 @@ class Authcontroller extends Controller
 
         $user->password = Hash::make($data['password']);
         $user->save();
-        return $this->success(true, 'user info updated');    
+        return $this->success(true, 'user info updated');
     }
-    
-
 
 }

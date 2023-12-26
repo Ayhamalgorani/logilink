@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AppController;
 use App\Http\Controllers\Api\User\Authcontroller;
 use App\Http\Controllers\Api\User\UserController;
+use App\Http\Controllers\WorkerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,11 +20,18 @@ use Illuminate\Support\Facades\Route;
 Route::controller(Authcontroller::class)
     ->prefix('auth')
     ->group(function () {
-        Route::post("/login", 'login');
+        Route::post("/user_login", 'userLogin');
         Route::post("/register", 'register');
         Route::post("/logut", 'logout');
         Route::post("/change_password", 'changePassword');
         Route::post('/reset_password', 'resetpassword');
+    });
+
+Route::controller(WorkerController::class)
+    ->prefix('worker')
+    ->group(function () {
+        Route::post("/login", 'workerLogin');
+        Route::post("/form", 'workerForm');
     });
 
 Route::middleware(['auth:sanctum'])

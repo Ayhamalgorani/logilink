@@ -15,4 +15,9 @@ class Service extends Model
     {
         return $this->HasMany(Worker::class);
     }
+    
+    public function worker_form(): HasMany
+    {
+        return $this->HasMany(WorkerForm::class);
+    }
 }
