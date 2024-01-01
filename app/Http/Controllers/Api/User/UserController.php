@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OrderResource;
 use App\Http\Resources\UserProfileResource;
-use App\Http\Resources\WorkerProfileResource;
 use App\Models\Favorite;
+use App\Models\Order;
 use App\Models\Service;
-use App\Models\Worker;
 use App\Traits\AppResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -57,7 +57,7 @@ class UserController extends Controller
         ]);
         $user = auth()->user();
         if (!Hash::check($data['password'], $user->password)) {
-            return $this->success(false,'worng password');
+            return $this->success(false, 'worng password');
         } else {
             auth()->user()->delete();
 
@@ -84,4 +84,27 @@ class UserController extends Controller
         auth()->user()->update($data);
         return $this->success(true, 'user info updated');
     }
+
+    public function orders(Request $request,$id)
+    {
+        $data = $request->validate([
+            "location" => 'required|string',
+            "date" => "required|date",
+            "time" => "required",
+            "description" => 'required|string',
+        ]);
+
+        Order::query()->create([
+            'user_id' => auth()->user()->id,
+            'service_id' => $id,
+            'location' => $data['location'],
+            'date' => $data['date'],
+            'time' => $data['time'],
+            'description' => $data['description'],
+        ]);
+
+        return $this->success(OrderResource::collection(Order::all()));
+    }
+
+    
 }

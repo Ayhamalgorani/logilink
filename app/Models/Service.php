@@ -20,4 +20,11 @@ class Service extends Model
     {
         return $this->HasMany(WorkerForm::class);
     }
+    
+    public function orders(): HasMany
+    {
+        return $this->HasMany(Order::class);
+    }
+
+    
 }
