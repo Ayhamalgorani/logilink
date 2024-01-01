@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OrderResource;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\WorkerFormResource;
+use App\Models\Order;
 use App\Models\User;
 use App\Models\WorkerForm;
 use App\Traits\AppResponse;
@@ -74,5 +76,10 @@ class WorkerController extends Controller
         ]);
         return $this->success(new WorkerFormResource($message), 'Form has been sent');
 
+    }
+
+    public function orders()
+    {
+        return $this->success(OrderResource::collection(Order::all()));
     }
 }

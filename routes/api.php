@@ -32,6 +32,7 @@ Route::controller(WorkerController::class)
     ->group(function () {
         Route::post("/login", 'workerLogin');
         Route::post("/form", 'workerForm');
+        Route::get("/orders", 'orders');
     });
 
 Route::middleware(['auth:sanctum'])

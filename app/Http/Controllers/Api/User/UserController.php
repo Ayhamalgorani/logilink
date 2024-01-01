@@ -7,7 +7,6 @@ use App\Http\Resources\OrderResource;
 use App\Http\Resources\UserProfileResource;
 use App\Models\Favorite;
 use App\Models\Order;
-use App\Models\Service;
 use App\Traits\AppResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -85,8 +84,17 @@ class UserController extends Controller
         return $this->success(true, 'user info updated');
     }
 
-    public function orders(Request $request,$id)
+    public function orders(Request $request, $id)
     {
+        $existingOrder = Order::query()
+            ->where('user_id', auth()->user()->id)
+            ->where('service_id', $id)
+            ->first();
+
+        if ($existingOrder) {
+            return $this->success('You can only place one order for this service.');
+        }
+        
         $data = $request->validate([
             "location" => 'required|string',
             "date" => "required|date",
@@ -94,7 +102,7 @@ class UserController extends Controller
             "description" => 'required|string',
         ]);
 
-        Order::query()->create([
+        $order = Order::query()->create([
             'user_id' => auth()->user()->id,
             'service_id' => $id,
             'location' => $data['location'],
@@ -103,8 +111,7 @@ class UserController extends Controller
             'description' => $data['description'],
         ]);
 
-        return $this->success(OrderResource::collection(Order::all()));
+        return $this->success(new OrderResource($order));
     }
 
-    
 }
