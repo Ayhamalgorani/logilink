@@ -24,7 +24,15 @@ class OfferResource extends JsonResource
                 'description' => $this->orders->description,
                 'images' => $this->orders->images,
             ],
-            'worker_name' => $this->user->name,
+            'worker_info' => 
+            [
+                $this->user->name,
+                $this->user->location,
+                $this->user->email,
+                $this->user->phone_number,  
+                $this->user->gender,  
+                $this->user->birth_date,  
+            ],  
             'price' => $this->price,
         ];
     }
