@@ -79,7 +79,15 @@ class WorkerController extends Controller
     }
 
     public function orders()
-    {
-        return $this->success(OrderResource::collection(Order::all()));
+    {        
+        $user = auth()->user();
+
+        if ($user->is_worker) {
+            $orders = $user->orders;
+            return $this->success(OrderResource::collection($orders));
+        } else {
+            return $this->success(['you are in user account']);
+        }
+    
     }
 }

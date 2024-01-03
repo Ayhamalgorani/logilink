@@ -32,5 +32,18 @@ class UserSeeder extends Seeder
                 "is_worker" => 0,
             ]
         );
+        // worker
+        DB::table('users')->insert(
+            [
+
+                "service_id" =>1,
+                "name" => "worker",
+                "email" => "worker@worker.com",
+                "password" => Hash::make('password'),
+                "gender" => 'male',
+                "phone_number" => '0796943941',
+                "is_worker" => 1,
+            ]
+        );
     }
 }

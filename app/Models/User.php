@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -67,10 +68,13 @@ class User extends Authenticatable
         return $this->hasOne(Worker::class);
     }
 
-    public function orders():HasMany
+    public function orders()
     {
-        return $this->HasMany(Order::class);
+        return $this->hasMany(Order::class, 'service_id', 'service_id');
     }
 
-    
+    public function services()
+    {
+        return $this->belongsTo(Service::class);
+    } 
 }

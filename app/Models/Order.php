@@ -17,9 +17,9 @@ class Order extends Model
         'date' => "datetime:Y-m-d",
     ];
 
-    public function user(): BelongsTo
+    public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'service_id', 'service_id');
     }
 
     public function service(): BelongsTo

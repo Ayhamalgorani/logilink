@@ -86,32 +86,37 @@ class UserController extends Controller
 
     public function orders(Request $request, $id)
     {
+        $user = auth()->user();
+
         $existingOrder = Order::query()
             ->where('user_id', auth()->user()->id)
             ->where('service_id', $id)
             ->first();
 
-        if ($existingOrder) {
-            return $this->success('You can only place one order for this service.');
+        if (!$user->is_worker) {
+            if ($existingOrder) {
+                return $this->success('You can only place one order for this service.');
+            }
+
+            $data = $request->validate([
+                "location" => 'required|string',
+                "date" => "required|date",
+                "time" => "required",
+                "description" => 'required|string',
+            ]);
+
+            $order = Order::query()->create([
+                'user_id' => auth()->user()->id,
+                'service_id' => $id,
+                'location' => $data['location'],
+                'date' => $data['date'],
+                'time' => $data['time'],
+                'description' => $data['description'],
+            ]);
+
+            return $this->success(new OrderResource($order));
         }
-        
-        $data = $request->validate([
-            "location" => 'required|string',
-            "date" => "required|date",
-            "time" => "required",
-            "description" => 'required|string',
-        ]);
-
-        $order = Order::query()->create([
-            'user_id' => auth()->user()->id,
-            'service_id' => $id,
-            'location' => $data['location'],
-            'date' => $data['date'],
-            'time' => $data['time'],
-            'description' => $data['description'],
-        ]);
-
-        return $this->success(new OrderResource($order));
+        return $this->success(['you are in worker account']);
     }
 
 }

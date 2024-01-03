@@ -16,6 +16,7 @@ class Authcontroller extends Controller
 {
     use AppResponse;
 
+    
     public function userLogin(Request $request): JsonResponse
     {
         $fields = $request->validate([
