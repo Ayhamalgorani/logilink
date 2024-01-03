@@ -53,9 +53,9 @@ class User extends Authenticatable
         return $this->hasMany(Favorite::class);
     }
 
-    public function order(): HasMany
+    public function offers(): HasMany
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Offers::class);
     }
 
     public function devices(): hasMany

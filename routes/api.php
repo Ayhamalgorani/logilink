@@ -37,13 +37,14 @@ Route::controller(WorkerController::class)
 
 Route::middleware(['auth:sanctum'])
     ->group(function () {
-        
+
         Route::controller(WorkerController::class)
             ->prefix('worker')
             ->group(function () {
                 Route::get("/orders", 'orders');
+                Route::post("/offers/{id}", 'offers');
             });
-            
+
         Route::controller(Authcontroller::class)
             ->prefix('auth')
             ->group(function () {
@@ -56,6 +57,7 @@ Route::middleware(['auth:sanctum'])
             ->prefix('user')
             ->group(function () {
                 Route::post('/order/{id}', 'orders');
+                Route::get("/offers", 'offers');
                 Route::get('/user_profile', 'getUserProfile');
                 Route::put('/edit_favorites', 'editFavorite');
                 Route::get('/favorites', 'getFavorite');

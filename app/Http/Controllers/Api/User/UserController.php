@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\UserProfileResource;
 use App\Models\Favorite;
+use App\Models\Offers;
 use App\Models\Order;
 use App\Traits\AppResponse;
 use Illuminate\Http\JsonResponse;
@@ -117,6 +118,19 @@ class UserController extends Controller
             return $this->success(new OrderResource($order));
         }
         return $this->success(['you are in worker account']);
+    }
+
+    public function offers()
+    {
+        $order = Order::with('offers')->first();
+
+        if ($order) {
+            $offers = $order->offers;
+            // Now $offers contains all the offers associated with the specified order
+            // You can use these offers as needed
+        } else {
+            // Handle the case where the order with the given ID is not found
+        }
     }
 
 }
