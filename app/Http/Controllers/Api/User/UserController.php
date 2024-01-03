@@ -70,13 +70,13 @@ class UserController extends Controller
     public function updateUserInfo(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required|string',
-            'email' => 'required_without:password|email|unique:users,email',
-            "gender" => "required|in:male,female,other",
-            "birth_date" => "required|date",
-            'phone_number' => 'required|regex:/^07[789]\d{7}$/',
-            'location' => 'required',
-            'password' => 'required_without:email|min:6|confirmed',
+            'name' => 'string',
+            'email' => 'email|unique:users,email',
+            "gender" => "in:male,female,other",
+            "birth_date" => "date",
+            'phone_number' => 'regex:/^07[789]\d{7}$/',
+            'location' => 'string',
+            'password' => 'min:6|confirmed',
         ]);
         if (isset($data['password'])) {
             $data['password'] = Hash::make($data['password']);
