@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource;
 use App\Http\Resources\WorkerFormResource;
 use App\Models\Offer;
 use App\Models\Offers;
+use App\Models\Order;
 use App\Models\User;
 use App\Models\WorkerForm;
 use App\Traits\AppResponse;
@@ -107,6 +108,17 @@ class WorkerController extends Controller
             'price' => 'required|integer',
         ]);
 
+        $order = Order::findOrFail($id);
+
+        $conflictingOrders = Offer::whereHas('orders', function ($query) use ($order) {
+            $query->where('date', $order->date)
+                ->where('time', $order->time);
+        })->where('user_id', auth()->user()->id)->exists();
+
+        if ($conflictingOrders) {
+            return $this->success('You cannot make an offer for orders at the same time and date.');
+        }
+
         $offer = Offer::query()->create([
             'user_id' => auth()->user()->id,
             'order_id' => $id,
@@ -114,6 +126,6 @@ class WorkerController extends Controller
         ]);
 
         return $this->success(new OfferResource($offer));
-
     }
+
 }

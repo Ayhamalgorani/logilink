@@ -26,12 +26,12 @@ class OfferResource extends JsonResource
             ],
             'worker_info' => 
             [
-                $this->user->name,
-                $this->user->location,
-                $this->user->email,
-                $this->user->phone_number,  
-                $this->user->gender,  
-                $this->user->birth_date,  
+                'name' => $this->user->name,
+                'location' =>$this->user->location,
+                'email' =>$this->user->email,
+                'phone_number' =>$this->user->phone_number,  
+                'gender' =>$this->user->gender,  
+                'birth_date' =>$this->user->birth_date,  
             ],  
             'price' => $this->price,
         ];
