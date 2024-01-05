@@ -31,7 +31,9 @@ class OfferResource extends JsonResource
                 'email' =>$this->user->email,
                 'phone_number' =>$this->user->phone_number,  
                 'gender' =>$this->user->gender,  
-                'birth_date' =>$this->user->birth_date,  
+                'birth_date' =>$this->user->birth_date,
+                'rate' => $this->user->getRate(),
+                'reviews' => $this->user->getReview()
             ],  
             'price' => $this->price,
         ];

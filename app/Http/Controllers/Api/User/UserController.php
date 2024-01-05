@@ -7,8 +7,10 @@ use App\Http\Resources\OfferResource;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\UserProfileResource;
 use App\Models\Favorite;
+use App\Models\Offer;
 use App\Models\Offers;
 use App\Models\Order;
+use App\Models\Review;
 use App\Traits\AppResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -136,6 +138,37 @@ class UserController extends Controller
             }
         }
         return $this->success('you are in the worker account');
+    }
+
+    public function rating(Request $request)
+    {
+        $data = $request->validate([
+            'offer_id' => 'required',
+            'worker_rate' => 'required|integer',
+            'worker_review' => 'required|string',
+        ]);
+
+        $offer = Offer::find($data['offer_id']);
+        if (!$offer->review) {
+
+            Review::create(
+                [
+                    'user_id' => auth()->user()->id,
+                    'worker_id' => $offer->user_id,
+                    'worker_rate' => $data['worker_rate'],
+                    'offer_id' => $data['offer_id'],
+                    'worker_review' => $data['worker_review'],
+                ]
+            );
+
+        } else {
+            $offer->review->worker_rate = $data['worker_rate'];
+            $offer->review->worker_review = $data['worker_review'];
+            $offer->review->save();
+        }
+
+        return $this->success(null);
+
     }
 
 }

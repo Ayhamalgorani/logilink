@@ -31,6 +31,8 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    // protected $appends = ['user'];
+
     /**
      * The attributes that should be cast.
      *
@@ -47,7 +49,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(ContactUs::class);
     }
-    
+
     public function favorite(): hasMany
     {
         return $this->hasMany(Favorite::class);
@@ -55,7 +57,7 @@ class User extends Authenticatable
 
     public function offers(): HasMany
     {
-        return $this->hasMany(Offers::class);
+        return $this->hasMany(Offer::class);
     }
 
     public function devices(): hasMany
@@ -63,7 +65,7 @@ class User extends Authenticatable
         return $this->hasMany(UserDevice::class);
     }
 
-    public function worker():HasOne
+    public function worker(): HasOne
     {
         return $this->hasOne(Worker::class);
     }
@@ -76,5 +78,32 @@ class User extends Authenticatable
     public function services()
     {
         return $this->belongsTo(Service::class);
-    } 
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'worker_id');
+    }
+
+    public function getRate()
+    {
+
+        if ($this->reviews->count() > 0) {
+            return $this->reviews->avg('worker_rate');
+        } else {
+            return 0;
+        }
+
+    }
+
+    public function getReview()
+    {
+        $arr = [];
+        foreach ($this->reviews as $review) {
+
+            $arr[] = ['worker_rate' => $review->worker_rate,
+                'worker_review' => $review->worker_review];
+        }
+        return $arr;
+    }
 }

@@ -63,13 +63,16 @@ Route::middleware(['auth:sanctum'])
                 Route::get('/favorites', 'getFavorite');
                 Route::delete('/delete_acount', 'deleteAcount');
                 Route::put('/update_user_info', 'updateUserInfo');
+                Route::post('/rating', 'rating');
             });
 
         Route::controller(AppController::class)
             ->group(function () {
-                Route::post('/worker_profile/{service?}', 'getWorkersByService');
+                // Route::post('/worker_profile/{service?}', 'getWorkersByService');
                 Route::get('/services', 'getServices');
                 Route::get('/settings', 'getSettings');
                 Route::post('/contact_us', 'creatMessage');
+                Route::get('/notification', 'getNotification');
+
             });
     });

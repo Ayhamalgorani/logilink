@@ -13,18 +13,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('workers', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(Service::class);
-            $table->foreignIdFor(User::class);
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->date('birth_date');
-            $table->string('gender');
-            $table->string('phone_number')->unique();
-            $table->string('location');
-            $table->timestamps();
-        });
+        // Schema::create('workers', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->foreignIdFor(Service::class);
+        //     $table->foreignIdFor(User::class);
+        //     $table->string('name');
+        //     $table->string('email')->unique();
+        //     $table->date('birth_date');
+        //     $table->string('gender');
+        //     $table->string('phone_number')->unique();
+        //     $table->string('location');
+        //     $table->timestamps();
+        // });
     }
 
     /**
@@ -32,7 +32,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('workers');
+        // Schema::dropIfExists('workers');
 
     }
 };
