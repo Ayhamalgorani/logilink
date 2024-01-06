@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\OfferResource;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\UserProfileResource;
+use App\Http\Resources\WorkerFileResource;
 use App\Models\Favorite;
 use App\Models\Offer;
 use App\Models\Offers;
 use App\Models\Order;
 use App\Models\Review;
+use App\Models\WorkerFile;
 use App\Traits\AppResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -171,4 +173,5 @@ class UserController extends Controller
 
     }
 
+    
 }

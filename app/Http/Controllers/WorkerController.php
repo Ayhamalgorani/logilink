@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\OfferResource;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\WorkerFileResource;
 use App\Http\Resources\WorkerFormResource;
 use App\Models\Offer;
 use App\Models\Offers;
@@ -14,6 +15,7 @@ use App\Models\WorkerForm;
 use App\Traits\AppResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class WorkerController extends Controller
@@ -127,5 +129,6 @@ class WorkerController extends Controller
 
         return $this->success(new OfferResource($offer));
     }
+
 
 }

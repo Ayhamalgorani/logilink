@@ -7,12 +7,15 @@ use App\Http\Resources\ContactUsResource;
 use App\Http\Resources\NotificationResource;
 use App\Http\Resources\ServiceResource;
 use App\Http\Resources\SettingsResource;
+use App\Http\Resources\WorkerFileResource;
 use App\Http\Resources\WorkerProfileResource;
 use App\Models\ContactUs;
 use App\Models\Notification;
 use App\Models\Service;
 use App\Models\Setting;
 use App\Models\Worker;
+use App\Models\WorkerFile;
+use App\Models\WorkerForm;
 use App\Traits\AppResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -59,5 +62,26 @@ class AppController extends Controller
         return $this->success(NotificationResource::collection(Notification::all()));
     }
 
+    public function uploadFile(Request $request)
+    {
+        $file = $request->file('file');
+        $file->store('public/files');
+        return $this->success(asset('storage/files') . '/' . $file->hashName());
+    }
+
+    
+    public function workerFile(Request $request,$id)
+    {
+        $data = $request->validate([
+            "file" => "required",
+            "title" => "required",
+        ]);
+        $file = WorkerFile::create([
+            'worker_form_id' => $id,
+            'file' => $data['file'],
+            'title' => $data['title'],
+        ]);
+        return $this->success(new WorkerFileResource($file));
+    }
 
 }
