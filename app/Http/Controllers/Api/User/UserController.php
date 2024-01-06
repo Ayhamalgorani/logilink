@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OfferResource;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\UserProfileResource;
 use App\Models\Favorite;
+use App\Models\Offer;
+use App\Models\Offers;
 use App\Models\Order;
+use App\Models\Review;
 use App\Traits\AppResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -69,13 +73,13 @@ class UserController extends Controller
     public function updateUserInfo(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required|string',
-            'email' => 'required_without:password|email|unique:users,email',
-            "gender" => "required|in:male,female,other",
-            "birth_date" => "required|date",
-            'phone_number' => 'required|regex:/^07[789]\d{7}$/',
-            'location' => 'required',
-            'password' => 'required_without:email|min:6|confirmed',
+            'name' => 'string',
+            'email' => 'email|unique:users,email',
+            "gender" => "in:male,female,other",
+            "birth_date" => "date",
+            'phone_number' => 'regex:/^07[789]\d{7}$/',
+            'location' => 'string',
+            'password' => 'min:6|confirmed',
         ]);
         if (isset($data['password'])) {
             $data['password'] = Hash::make($data['password']);
@@ -86,32 +90,85 @@ class UserController extends Controller
 
     public function orders(Request $request, $id)
     {
+        $user = auth()->user();
+
         $existingOrder = Order::query()
             ->where('user_id', auth()->user()->id)
             ->where('service_id', $id)
             ->first();
 
-        if ($existingOrder) {
-            return $this->success('You can only place one order for this service.');
+        if (!$user->is_worker) {
+            if ($existingOrder) {
+                return $this->success('You can only place one order for this service.');
+            }
+
+            $data = $request->validate([
+                "location" => 'required|string',
+                "date" => "required|date",
+                "time" => "required",
+                "description" => 'required|string',
+            ]);
+
+            $order = Order::query()->create([
+                'user_id' => auth()->user()->id,
+                'service_id' => $id,
+                'location' => $data['location'],
+                'date' => $data['date'],
+                'time' => $data['time'],
+                'description' => $data['description'],
+            ]);
+
+            return $this->success(new OrderResource($order));
         }
-        
+        return $this->success(['you are in worker account']);
+    }
+
+    public function offers()
+    {
+        $order = Order::with('offers')->first();
+
+        $user = auth()->user();
+
+        if (!$user->is_worker) {
+            if ($order) {
+                $offers = $order->offers;
+                return $this->success(OfferResource::collection($offers));
+            } else {
+                return $this->success([]);
+            }
+        }
+        return $this->success('you are in the worker account');
+    }
+
+    public function rating(Request $request)
+    {
         $data = $request->validate([
-            "location" => 'required|string',
-            "date" => "required|date",
-            "time" => "required",
-            "description" => 'required|string',
+            'offer_id' => 'required',
+            'worker_rate' => 'required|integer',
+            'worker_review' => 'required|string',
         ]);
 
-        $order = Order::query()->create([
-            'user_id' => auth()->user()->id,
-            'service_id' => $id,
-            'location' => $data['location'],
-            'date' => $data['date'],
-            'time' => $data['time'],
-            'description' => $data['description'],
-        ]);
+        $offer = Offer::find($data['offer_id']);
+        if (!$offer->review) {
 
-        return $this->success(new OrderResource($order));
+            Review::create(
+                [
+                    'user_id' => auth()->user()->id,
+                    'worker_id' => $offer->user_id,
+                    'worker_rate' => $data['worker_rate'],
+                    'offer_id' => $data['offer_id'],
+                    'worker_review' => $data['worker_review'],
+                ]
+            );
+
+        } else {
+            $offer->review->worker_rate = $data['worker_rate'];
+            $offer->review->worker_review = $data['worker_review'];
+            $offer->review->save();
+        }
+
+        return $this->success(null);
+
     }
 
 }

@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ContactUsResource;
+use App\Http\Resources\NotificationResource;
 use App\Http\Resources\ServiceResource;
 use App\Http\Resources\SettingsResource;
 use App\Http\Resources\WorkerProfileResource;
 use App\Models\ContactUs;
+use App\Models\Notification;
 use App\Models\Service;
 use App\Models\Setting;
 use App\Models\Worker;
@@ -30,16 +32,16 @@ class AppController extends Controller
         return $this->success(SettingsResource::collection(Setting::all()));
     }
     
-    public function getWorkersByService(Service $service): JsonResponse
-    {
-        $workers = Worker::whereHas('user', function ($query) use ($service) {
-            $query->where('is_worker', true);
-        })
-            ->where('service_id', $service->id)
-            ->get();
+    // public function getWorkersByService(Service $service): JsonResponse
+    // {
+    //     $workers = Worker::whereHas('user', function ($query) use ($service) {
+    //         $query->where('is_worker', true);
+    //     })
+    //         ->where('service_id', $service->id)
+    //         ->get();
 
-        return $this->success(WorkerProfileResource::collection($workers));
-    }
+    //     return $this->success(WorkerProfileResource::collection($workers));
+    // }
 
     public function creatMessage(Request $request)
     {
@@ -50,6 +52,11 @@ class AppController extends Controller
         ]);
         $message = Auth::user()->contact_us()->create(["name" => $data['name'], "message" => $data['message']]);
         return $this->success(new ContactUsResource($message), 'message has been sent');
+    }
+
+    public function getNotification()
+    {
+        return $this->success(NotificationResource::collection(Notification::all()));
     }
 
 

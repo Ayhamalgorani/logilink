@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OfferResource;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\WorkerFormResource;
+use App\Models\Offer;
+use App\Models\Offers;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\WorkerForm;
@@ -25,9 +28,8 @@ class WorkerController extends Controller
         ]);
 
         $user = User::where('email', $fields['email'])
-        ->where('is_worker', 1)
-        ->first();
-
+            ->where('is_worker', 1)
+            ->first();
 
         if ($user && Hash::check($fields['password'], $user->password)) {
             return $this->success([
@@ -48,7 +50,7 @@ class WorkerController extends Controller
 
     public function workerForm(Request $request)
     {
-        $data =  $request->validate([
+        $data = $request->validate([
             'name' => 'required|string',
             'email' => 'required|string|unique:worker_forms',
             'phone_number' => 'required|regex:/^07[789]\d{7}$/|unique:worker_forms',
@@ -65,10 +67,10 @@ class WorkerController extends Controller
         );
 
         $message = WorkerForm::create([
-            "name" => $data['name'], 
+            "name" => $data['name'],
             "email" => $data['email'],
             "phone_number" => $data['phone_number'],
-            "service_id" => $data['service'], 
+            "service_id" => $data['service'],
             "gender" => $data['gender'],
             "birth_date" => $data['birth_date'],
             "location" => $data['location'],
@@ -80,6 +82,50 @@ class WorkerController extends Controller
 
     public function orders()
     {
-        return $this->success(OrderResource::collection(Order::all()));
+        $user = auth()->user();
+
+        if ($user->is_worker) {
+            $orders = $user->orders;
+            return $this->success(OrderResource::collection($orders));
+        } else {
+            return $this->success(['you are in user account']);
+        }
+
     }
+
+    public function offers(Request $request, $id)
+    {
+        $existingOrder = Offer::query()
+            ->where('user_id', auth()->user()->id)
+            ->where('order_id', $id)
+            ->first();
+
+        if ($existingOrder) {
+            return $this->success('You already gave this order a PRICE');
+        }
+
+        $data = $request->validate([
+            'price' => 'required|integer',
+        ]);
+
+        $order = Order::findOrFail($id);
+
+        $conflictingOrders = Offer::whereHas('orders', function ($query) use ($order) {
+            $query->where('date', $order->date)
+                ->where('time', $order->time);
+        })->where('user_id', auth()->user()->id)->exists();
+
+        if ($conflictingOrders) {
+            return $this->success('You cannot make an offer for orders at the same time and date.');
+        }
+
+        $offer = Offer::query()->create([
+            'user_id' => auth()->user()->id,
+            'order_id' => $id,
+            'price' => $data['price'],
+        ]);
+
+        return $this->success(new OfferResource($offer));
+    }
+
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Order;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -13,16 +14,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('offers', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Service::class);
-            $table->string('location');
-            $table->date('date');
-            $table->string('time');
-            $table->string('description');
-            $table->json('images')->nullable();
-            $table->string('statuse')->default('pending');
+            $table->foreignIdFor(Order::class);
+            $table->integer('price');
             $table->timestamps();
         });
     }
@@ -32,7 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
-
+        Schema::dropIfExists('offers');
     }
 };
