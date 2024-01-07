@@ -15,6 +15,7 @@ class WorkerForm extends Model
 
     protected $casts = [
         'birth_date' => "datetime:Y-m-d",
+        'is_terms_agreed' => "boolean",
     ];
 
     public function service(): BelongsTo

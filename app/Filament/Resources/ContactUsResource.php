@@ -3,9 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ContactUsResource\Pages;
-use App\Filament\Resources\ContactUsResource\RelationManagers;
 use App\Models\ContactUs;
-use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -14,8 +12,6 @@ use Filament\Tables;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ContactUsResource extends Resource
 {
@@ -23,17 +19,18 @@ class ContactUsResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-envelope-open';
     protected static ?string $navigationLabel = 'Contact US Form';
-    protected static ?string $pluralModelLabel  = 'Contact US Form';
+    protected static ?string $navigationGroup = 'App';
 
+    protected static ?string $pluralModelLabel = 'Contact US Form';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Select::make('user_id')
-                ->relationship('user', 'name'),
+                    ->relationship('user', 'name'),
                 TextInput::make('name'),
-                TextInput::make('message'),              
+                TextInput::make('message'),
             ]);
     }
 
@@ -42,8 +39,8 @@ class ContactUsResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('user.name')
-                ->label('User Name')
-                ->searchable(),
+                    ->label('User Name')
+                    ->searchable(),
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('message')
@@ -72,14 +69,14 @@ class ContactUsResource extends Resource
                 Tables\Actions\CreateAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -87,5 +84,5 @@ class ContactUsResource extends Resource
             'create' => Pages\CreateContactUs::route('/create'),
             // 'edit' => Pages\EditContactUs::route('/{record}/edit'),
         ];
-    }    
+    }
 }

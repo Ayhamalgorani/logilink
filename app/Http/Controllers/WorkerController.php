@@ -56,6 +56,7 @@ class WorkerController extends Controller
             'email' => 'required|string|unique:worker_forms',
             'phone_number' => 'required|regex:/^07[789]\d{7}$/|unique:worker_forms',
             'service' => 'required',
+            'nationality' => 'required|string',
             "gender" => "required|in:male,female",
             "birth_date" => "required|date",
             'location' => 'required',
@@ -75,6 +76,7 @@ class WorkerController extends Controller
             "gender" => $data['gender'],
             "birth_date" => $data['birth_date'],
             "location" => $data['location'],
+            "nationality" => $data['nationality'],
             "is_terms_agreed" => $data['terms'],
         ]);
         return $this->success(new WorkerFormResource($message), 'Form has been sent');
@@ -163,7 +165,7 @@ class WorkerController extends Controller
     public function uploadImage(Request $request)
     {
         $request->validate([
-            'images' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'images' => 'required|image',
         ]);
 
         $image = $request->file('images');

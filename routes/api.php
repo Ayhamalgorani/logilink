@@ -33,7 +33,7 @@ Route::controller(WorkerController::class)
         Route::post("/login", 'workerLogin');
         Route::post('/upload_file', 'uploadFile');
         Route::post('/upload_image', 'uploadImage');
-        Route::post('/worker_image', 'workerImage');
+        Route::post('/worker_image/{id}', 'workerImage');
         Route::post('/worker_file/{id}', 'workerFile');
         Route::post("/form", 'workerForm');
     });

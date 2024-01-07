@@ -2,33 +2,37 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SettingResource\Pages;
-use App\Filament\Resources\SettingResource\RelationManagers;
-use App\Models\Setting;
+use App\Filament\Resources\NotificationResource\Pages;
+use App\Models\Notification;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Section;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class SettingResource extends Resource
+class NotificationResource extends Resource
 {
-    protected static ?string $model = Setting::class;
-
+    protected static ?string $model = Notification::class;
     protected static ?string $navigationGroup = 'App';
-    protected static ?string $navigationIcon = 'heroicon-o-adjustments-horizontal';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\MarkdownEditor::make('about_us')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\MarkdownEditor::make('privecy')
-                    ->required()
-                    ->maxLength(255),
+                Section::make()
+                    ->schema([
+                        Grid::make(2)
+                            ->schema([Forms\Components\TextInput::make('title')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('message')
+                                    ->required()
+                                    ->maxLength(255),
+                            ]),
+                    ]),
             ]);
     }
 
@@ -36,9 +40,9 @@ class SettingResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('about_us')
+                Tables\Columns\TextColumn::make('title')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('privecy')
+                Tables\Columns\TextColumn::make('message')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -64,20 +68,20 @@ class SettingResource extends Resource
                 Tables\Actions\CreateAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSettings::route('/'),
-            'create' => Pages\CreateSetting::route('/create'),
-            'edit' => Pages\EditSetting::route('/{record}/edit'),
+            'index' => Pages\ListNotifications::route('/'),
+            'create' => Pages\CreateNotification::route('/create'),
+            'edit' => Pages\EditNotification::route('/{record}/edit'),
         ];
-    }    
+    }
 }

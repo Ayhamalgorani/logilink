@@ -3,9 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CountryResource\Pages;
-use App\Filament\Resources\CountryResource\RelationManagers;
 use App\Models\Country;
-use Filament\Forms;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
@@ -14,8 +12,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CountryResource extends Resource
 {
@@ -23,22 +19,23 @@ class CountryResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
 
+    protected static ?string $navigationGroup = 'App';
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Section::make()
-                ->schema([
-                    Grid::make(2)
                     ->schema([
-                TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                TextInput::make('code')
-                    ->required()
-                    ->maxLength(255),
-                ]),
-            ]),
+                        Grid::make(2)
+                            ->schema([
+                                TextInput::make('name')
+                                    ->required()
+                                    ->maxLength(255),
+                                TextInput::make('code')
+                                    ->required()
+                                    ->maxLength(255),
+                            ]),
+                    ]),
             ]);
     }
 
@@ -66,14 +63,14 @@ class CountryResource extends Resource
                 Tables\Actions\CreateAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -81,5 +78,5 @@ class CountryResource extends Resource
             'create' => Pages\CreateCountry::route('/create'),
             'edit' => Pages\EditCountry::route('/{record}/edit'),
         ];
-    }    
+    }
 }

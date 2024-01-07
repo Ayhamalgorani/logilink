@@ -16,4 +16,7 @@ class ListWorkers extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    protected static ?string $navigationLabel = 'Workers';
+
 }

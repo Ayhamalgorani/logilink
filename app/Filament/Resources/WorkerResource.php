@@ -5,84 +5,102 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\WorkerResource\Pages;
 use App\Filament\Resources\WorkerResource\RelationManagers;
 use App\Models\Service;
+use App\Models\User;
 use App\Models\Worker;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class WorkerResource extends Resource
 {
-    protected static ?string $model = Worker::class;
+    protected static ?string $model = User::class;
+    protected static ?string $navigationGroup = 'Worker';
+    protected static ?string $modelLabel = 'Worker';
 
-    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
 
+    protected static ?string $navigationLabel = 'Worker';
+
+
+
+    protected static ?string $navigationIcon = 'heroicon-o-user';
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->where('is_worker', 1);
+    }
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Section::make()
+        ->schema([
+            Section::make()
                 ->schema([
+                    Grid::make(3)
+                        ->schema([
+                            Toggle::make('is_worker'),
+                        ]),
+
                     Grid::make(2)
-                    ->schema([
-                        Select::make('service_id')
-                        ->options(Service::all()->pluck('name', 'id')),
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('email')
-                            ->email()
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\DatePicker::make('birth_date')
-                            ->required(),
-                        Forms\Components\TextInput::make('gender')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('phone_number')
-                            ->tel()
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('location')
-                            ->required()
-                            ->maxLength(255),
-                    ])
-                ])
-               
-            ]);
+                        ->schema([
+                            TextInput::make('name')
+                                ->required()
+                                ->maxLength(255),
+                            TextInput::make('email')
+                                ->email()
+                                ->required()
+                                ->maxLength(255),
+                            DatePicker::make('birth_date')
+                                ->required(),
+                            Select::make('gender')
+                                ->options(['male' => 'male', 'female' => 'female'])
+                                ->required(),
+                            TextInput::make('phone_number')
+                                ->tel()
+                                ->maxLength(10)
+                                ->required(),
+                            TextInput::make('password')
+                                ->password()
+                                ->maxLength(255),
+                        ]),
+                ]),
+
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('service_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('index')
+                    ->rowIndex(),
+                TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email')
+                TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('birth_date')
+                TextColumn::make('birth_date')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('gender')
+                TextColumn::make('gender')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('phone_number')
+                TextColumn::make('phone_number')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('location')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

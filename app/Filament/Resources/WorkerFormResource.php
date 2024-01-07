@@ -2,9 +2,8 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\WorkerFormResource\Pages;
+use App\Models\WorkerForm;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
@@ -13,27 +12,19 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\CreateAction;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
+use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 
-class UserResource extends Resource
+class WorkerFormResource extends Resource
 {
-    protected static ?string $model = User::class;
+    protected static ?string $model = WorkerForm::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
-    protected static ?string $navigationGroup = 'User';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->where('is_worker', 0);
-    }
     public static function form(Form $form): Form
     {
         return $form
@@ -70,7 +61,6 @@ class UserResource extends Resource
                     ]),
 
             ]);
-
     }
 
     public static function table(Table $table): Table
@@ -79,17 +69,27 @@ class UserResource extends Resource
             ->columns([
                 TextColumn::make('index')
                     ->rowIndex(),
+                TextColumn::make('service.name')
+                    ->searchable(),
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('email')
+                    ->searchable(),
+                TextColumn::make('location')
                     ->searchable(),
                 TextColumn::make('birth_date')
                     ->date()
                     ->sortable(),
                 TextColumn::make('gender')
                     ->searchable(),
+                TextColumn::make('nationality')
+                    ->searchable(),
+                    ToggleColumn::make('is_terms_agreed')
+                    ->sortable(),
                 TextColumn::make('phone_number')
                     ->searchable(),
+                ImageColumn::make('images')
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -103,16 +103,15 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                EditAction::make(),
-                DeleteAction::make(),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
             ->emptyStateActions([
-                CreateAction::make(),
+                Tables\Actions\CreateAction::make(),
             ]);
     }
 
@@ -126,9 +125,9 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => Pages\ListWorkerForms::route('/'),
+            'create' => Pages\CreateWorkerForm::route('/create'),
+            'edit' => Pages\EditWorkerForm::route('/{record}/edit'),
         ];
     }
 }
