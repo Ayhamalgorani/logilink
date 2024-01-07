@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Resources\OfferResource;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\UserResource;
-use App\Http\Resources\WorkerFileResource;
 use App\Http\Resources\WorkerFormResource;
 use App\Models\Offer;
 use App\Models\Offers;
@@ -106,6 +105,17 @@ class WorkerController extends Controller
             return $this->success('You already gave this order a PRICE');
         }
 
+        $unActiveOrders = Order::query()
+            ->where(function ($query) {
+                $query->where('status', 'like', 'active')
+                    ->orWhere('status', 'like', 'finish');
+            })
+            ->first();
+
+        if ($unActiveOrders) {
+            return $this->success('This order is finish or Someone made an offer');
+        }
+
         $data = $request->validate([
             'price' => 'required|integer',
         ]);
@@ -130,5 +140,50 @@ class WorkerController extends Controller
         return $this->success(new OfferResource($offer));
     }
 
+    public function uploadFile(Request $request)
+    {
+        $file = $request->file('file');
+        $file->store('public/files');
+        return $this->success(asset('storage/files') . '/' . $file->hashName());
+    }
+
+    public function workerFile(Request $request, $id)
+    {
+        $data = $request->validate([
+            "file" => "required",
+        ]);
+        $workerForm = WorkerForm::findOrFail($id);
+
+        $workerForm->update([
+            'file' => $data['file'],
+        ]);
+        return $this->success(new WorkerFormResource($workerForm));
+    }
+
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'images' => 'required|image|mimes:jpeg,png,jpg,gif',
+        ]);
+
+        $image = $request->file('images');
+        $image->store('images', 'public');
+
+        return $this->success(asset('storage/images') . '/' . $image->hashName());
+
+    }
+
+    public function workerImage(Request $request, $id)
+    {
+        $data = $request->validate([
+            "image" => "required",
+        ]);
+        $workerForm = WorkerForm::findOrFail($id);
+
+        $workerForm->update([
+            'image' => $data['image'],
+        ]);
+        return $this->success(new WorkerFormResource($workerForm));
+    }
 
 }

@@ -6,13 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\OfferResource;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\UserProfileResource;
-use App\Http\Resources\WorkerFileResource;
 use App\Models\Favorite;
 use App\Models\Offer;
 use App\Models\Offers;
 use App\Models\Order;
 use App\Models\Review;
-use App\Models\WorkerFile;
 use App\Traits\AppResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -90,6 +88,23 @@ class UserController extends Controller
         return $this->success(true, 'user info updated');
     }
 
+    public function orderImages(Request $request)
+    {
+        $request->validate([
+            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif',
+        ]);
+    
+        $paths = [];
+    
+        foreach ($request->file('images') as $image) {
+            $path = $image->store('images', 'public');
+            $paths[] = asset('storage/' . $path);
+        }
+    
+        return $this->success($paths);
+
+    }
+
     public function orders(Request $request, $id)
     {
         $user = auth()->user();
@@ -109,6 +124,7 @@ class UserController extends Controller
                 "date" => "required|date",
                 "time" => "required",
                 "description" => 'required|string',
+                "images" => 'required',
             ]);
 
             $order = Order::query()->create([
@@ -118,6 +134,7 @@ class UserController extends Controller
                 'date' => $data['date'],
                 'time' => $data['time'],
                 'description' => $data['description'],
+                'images' => $data['images'],
             ]);
 
             return $this->success(new OrderResource($order));
@@ -173,5 +190,34 @@ class UserController extends Controller
 
     }
 
+    public function confirmOrder($id): JsonResponse
+    {
+        $order = Order::findOrFail($id);
+
+        // Check if the order is not already confirmed
+        if ($order->status !== 'active') {
+            $order->update(['status' => 'active']);
+
+            return $this->success([$order,'Order confirmed successfully']);
+
+        }
+
+        return $this->success(['Order is already confirmed']);
+    }
+    
+    public function finishOrder($id): JsonResponse
+    {
+        $order = Order::findOrFail($id);
+
+        // Check if the order is not already confirmed
+        if ($order->status !== 'finish') {
+            $order->update(['status' => 'finish']);
+
+            return $this->success([$order,'Order finish successfully']);
+
+        }
+
+        return $this->success(['Order is already Finished']);
+    }
     
 }

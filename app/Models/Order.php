@@ -14,7 +14,7 @@ class Order extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'images' => 'array',
+        'images' => 'json',
         'date' => "datetime:Y-m-d",
     ];
 

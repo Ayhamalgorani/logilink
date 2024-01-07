@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('worker_files', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(WorkerForm::class);
-            $table->string('title');
-            $table->text('file');
-            $table->timestamps();
-        });
+        // Schema::create('worker_files', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->foreignIdFor(WorkerForm::class);
+        //     $table->string('title');
+        //     $table->text('file');
+        //     $table->timestamps();
+        // });
     }
 
     /**
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('worker_files');
+        // Schema::dropIfExists('worker_files');
     }
 };

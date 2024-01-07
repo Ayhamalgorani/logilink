@@ -19,9 +19,11 @@ return new class extends Migration
             $table->string('email');
             $table->string('location');
             $table->string('phone_number');
+            $table->string('file')->nullable();
             $table->date('birth_date')->nullable();
+            $table->string('image')->nullable();
             $table->enum('gender', ['male', 'female']);
-            $table->enum('nationality', ['jordaninan', 'egyptian', 'syrian']);
+            $table->string('nationality');
             $table->boolean('is_terms_agreed')->default(false);
             $table->timestamps();
         });

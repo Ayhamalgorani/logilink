@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('time');
             $table->string('description');
             $table->json('images')->nullable();
-            $table->string('statuse')->default('pending');
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }

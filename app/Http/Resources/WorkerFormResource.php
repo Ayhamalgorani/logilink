@@ -22,6 +22,8 @@ class WorkerFormResource extends JsonResource
             "gender" => $this->gender,
             "birth_date" => $this->birth_date,
             "location" => $this->location,
+            "file" => $this->file,
+            "image" => $this->image,
             "terms" => $this->is_terms_agreed,
         ];
     }

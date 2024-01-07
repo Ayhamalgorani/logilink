@@ -31,8 +31,11 @@ Route::controller(WorkerController::class)
     ->prefix('worker')
     ->group(function () {
         Route::post("/login", 'workerLogin');
+        Route::post('/upload_file', 'uploadFile');
+        Route::post('/upload_image', 'uploadImage');
+        Route::post('/worker_image', 'workerImage');
+        Route::post('/worker_file/{id}', 'workerFile');
         Route::post("/form", 'workerForm');
-        Route::get("/orders", 'orders');
     });
 
 Route::middleware(['auth:sanctum'])
@@ -58,6 +61,7 @@ Route::middleware(['auth:sanctum'])
             ->prefix('user')
             ->group(function () {
                 Route::post('/order/{id}', 'orders');
+                Route::post('/order_images/{id}', 'orderImages');
                 Route::get("/offers", 'offers');
                 Route::get('/user_profile', 'getUserProfile');
                 Route::put('/edit_favorites', 'editFavorite');
@@ -65,6 +69,9 @@ Route::middleware(['auth:sanctum'])
                 Route::delete('/delete_acount', 'deleteAcount');
                 Route::put('/update_user_info', 'updateUserInfo');
                 Route::post('/rating', 'rating');
+                Route::put('/confirm_orders/{id}', 'confirmOrder');
+                Route::put('/finish_orders/{id}', 'finishOrder');
+
 
             });
     });
@@ -75,8 +82,6 @@ Route::controller(AppController::class)
         Route::get('/services', 'getServices');
         Route::get('/settings', 'getSettings');
         Route::post('/contact_us', 'creatMessage');
-        Route::post('/upload_file', 'uploadFile');
-        Route::post('/worker_file/{id}', 'workerFile');
         Route::get('/notification', 'getNotification');
 
     });
