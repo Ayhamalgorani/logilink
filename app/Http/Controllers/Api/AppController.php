@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ContactUsResource;
+use App\Http\Resources\CountryResource;
 use App\Http\Resources\NotificationResource;
 use App\Http\Resources\ServiceResource;
 use App\Http\Resources\SettingsResource;
@@ -11,6 +12,7 @@ use App\Http\Resources\WorkerFileResource;
 use App\Http\Resources\WorkerFormResource;
 use App\Http\Resources\WorkerProfileResource;
 use App\Models\ContactUs;
+use App\Models\Country;
 use App\Models\Notification;
 use App\Models\Service;
 use App\Models\Setting;
@@ -29,6 +31,10 @@ class AppController extends Controller
     public function getServices()
     {
         return $this->success(ServiceResource::collection(Service::all()));
+    }
+    public function getCountries()
+    {
+        return $this->success(CountryResource::collection(Country::all()));
     }
 
     public function getSettings()
