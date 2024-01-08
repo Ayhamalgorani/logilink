@@ -24,7 +24,6 @@ class OrderSeeder extends Seeder
                 "description" => 'test test',
                 'images' => json_encode([
                     asset('public/img/test.jpg'),
-
                 ]),            
                 ]
         );
