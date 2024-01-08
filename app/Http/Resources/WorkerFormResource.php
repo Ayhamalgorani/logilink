@@ -14,6 +14,7 @@ class WorkerFormResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        
         return [
             "id" => $this->id, 
             "name" => $this->name, 
@@ -22,9 +23,8 @@ class WorkerFormResource extends JsonResource
             "service_id" => $this->service, 
             "gender" => $this->gender,
             "birth_date" => $this->birth_date,
-            "location" => $this->location,
-            "file" => $this->file,
-            "image" => $this->image,
+            "file" => asset('storage/files/' . $this->file),
+            "image" =>asset('storage/images/' . $this->image),
             "country_id" => $this->country_id,
             "terms" => $this->is_terms_agreed,
         ];

@@ -5,15 +5,14 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\WorkerFormResource\Pages;
 use App\Models\WorkerForm;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
@@ -31,13 +30,13 @@ class WorkerFormResource extends Resource
             ->schema([
                 Section::make()
                     ->schema([
-                        Grid::make(3)
-                            ->schema([
-                                Toggle::make('is_worker'),
-                            ]),
 
                         Grid::make(2)
                             ->schema([
+                                Select::make('country_id')
+                                ->relationship('country' ,'name'),
+                                Select::make('service_id')
+                                ->relationship('service' ,'name'),
                                 TextInput::make('name')
                                     ->required()
                                     ->maxLength(255),
@@ -54,10 +53,14 @@ class WorkerFormResource extends Resource
                                     ->tel()
                                     ->maxLength(10)
                                     ->required(),
-                                TextInput::make('password')
-                                    ->password()
-                                    ->maxLength(255),
+                                
                             ]),
+                            Grid::make(2)
+                            ->schema([
+                                FileUpload::make('image'),
+                                FileUpload::make('file')
+                                ->downloadable(),
+                            ])
                     ]),
 
             ]);
@@ -84,11 +87,11 @@ class WorkerFormResource extends Resource
                     ->searchable(),
                 TextColumn::make('nationality')
                     ->searchable(),
-                    ToggleColumn::make('is_terms_agreed')
+                ToggleColumn::make('is_terms_agreed')
                     ->sortable(),
                 TextColumn::make('phone_number')
                     ->searchable(),
-                ImageColumn::make('images')
+                ImageColumn::make('image')
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
