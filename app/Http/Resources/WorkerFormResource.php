@@ -15,6 +15,7 @@ class WorkerFormResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            "id" => $this->id, 
             "name" => $this->name, 
             "email" => $this->email,
             "phone_number" => $this->phone_number,
@@ -24,6 +25,7 @@ class WorkerFormResource extends JsonResource
             "location" => $this->location,
             "file" => $this->file,
             "image" => $this->image,
+            "country_id" => $this->country_id,
             "terms" => $this->is_terms_agreed,
         ];
     }

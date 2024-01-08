@@ -27,4 +27,9 @@ class WorkerForm extends Model
     {
         return $this->hasMany(WorkerFile::class);
     }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
 }

@@ -10,4 +10,9 @@ class Country extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function worker_form()
+    {
+        return $this->hasMany(WorkerForm::class);
+    }
 }

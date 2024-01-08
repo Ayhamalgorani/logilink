@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Country;
 use App\Models\Service;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,9 +16,9 @@ return new class extends Migration
         Schema::create('worker_forms', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Service::class);
+            $table->foreignIdFor(Country::class);
             $table->string('name');
             $table->string('email');
-            $table->string('location');
             $table->string('phone_number');
             $table->string('file')->nullable();
             $table->date('birth_date')->nullable();

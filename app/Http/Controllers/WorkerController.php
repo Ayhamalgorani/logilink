@@ -53,13 +53,13 @@ class WorkerController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string',
+            'location' => 'required|integer',
             'email' => 'required|string|unique:worker_forms',
             'phone_number' => 'required|regex:/^07[789]\d{7}$/|unique:worker_forms',
             'service' => 'required',
             'nationality' => 'required|string',
             "gender" => "required|in:male,female",
             "birth_date" => "required|date",
-            'location' => 'required',
             'terms' => 'required|accepted',
         ]
             , [
@@ -75,7 +75,7 @@ class WorkerController extends Controller
             "service_id" => $data['service'],
             "gender" => $data['gender'],
             "birth_date" => $data['birth_date'],
-            "location" => $data['location'],
+            "country_id" => $data['location'],
             "nationality" => $data['nationality'],
             "is_terms_agreed" => $data['terms'],
         ]);
