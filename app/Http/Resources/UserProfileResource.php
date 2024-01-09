@@ -21,6 +21,8 @@ class UserProfileResource extends JsonResource
             "gender" => $this->gender,
             "phone_number" => $this->phone_number,
             "location" => $this->location,
+            'rate' => $this->getRate(),
+            'reviews' => $this->getReview()
 
         ];   
     
