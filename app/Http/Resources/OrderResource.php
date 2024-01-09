@@ -18,9 +18,12 @@ class OrderResource extends JsonResource
         foreach ($this?->images as $image) {
             $images[] = asset('storage/images/' . $image);
         }
+
+
         
         return [
             'id' => $this->id,
+            'name' => $this->user->name,
             'location' => $this->location,
             'date' => $this->date,
             'time' => $this->time,
