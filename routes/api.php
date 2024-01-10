@@ -46,6 +46,7 @@ Route::middleware(['auth:sanctum'])
             ->group(function () {
                 Route::get("/orders", 'orders');
                 Route::post("/offers/{id}", 'offers');
+                Route::get("/get_offers", 'getOffers');
 
             });
 

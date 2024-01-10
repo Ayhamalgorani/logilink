@@ -96,6 +96,19 @@ class WorkerController extends Controller
 
     }
 
+    public function getOffers()
+    {
+        
+        $user = auth()->user();
+        if ($user->is_worker) {
+            $offer = $user->offers;
+            return $this->success(OfferResource::collection($offer));
+        } else {
+            return $this->success(['you are in user account']);
+        }
+
+    }
+
     public function offers(Request $request, $id)
     {
         $existingOrder = Offer::query()
@@ -187,5 +200,7 @@ class WorkerController extends Controller
         ]);
         return $this->success(new WorkerFormResource($workerForm));
     }
+
+   
 
 }
