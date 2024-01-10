@@ -88,7 +88,9 @@ class WorkerController extends Controller
         $user = auth()->user();
 
         if ($user->is_worker) {
-            $orders = $user->orders;
+            $orders = $user->orders()->whereDoesntHave('offers', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->get();
             return $this->success(OrderResource::collection($orders));
         } else {
             return $this->success(['you are in user account']);
@@ -98,7 +100,7 @@ class WorkerController extends Controller
 
     public function getOffers()
     {
-        
+
         $user = auth()->user();
         if ($user->is_worker) {
             $offer = $user->offers;
@@ -200,7 +202,5 @@ class WorkerController extends Controller
         ]);
         return $this->success(new WorkerFormResource($workerForm));
     }
-
-   
 
 }
