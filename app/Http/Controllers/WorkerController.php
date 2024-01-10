@@ -180,13 +180,17 @@ class WorkerController extends Controller
     public function uploadImage(Request $request)
     {
         $request->validate([
-            'images' => 'required|image',
+            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif',
         ]);
-
-        $image = $request->file('images');
-        $image->store('images', 'public');
-
-        return $this->success(asset('storage/images') . '/' . $image->hashName());
+    
+        $paths = [];
+    
+        foreach ($request->file('images') as $image) {
+            $path = $image->store('images', 'public');
+            $paths[] = asset('storage/' . $path);
+        }
+    
+        return $this->success($paths);
 
     }
 
