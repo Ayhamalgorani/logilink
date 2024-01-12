@@ -17,8 +17,8 @@ class OfferResource extends JsonResource
     
     
         return [
-            'id' => $this->orders->id,
             'order' => [
+                'id' => $this->orders->id,
                 'location' => $this->orders->location,
                 'name' => $this->orders->user->name,
                 'date' => $this->orders->date,
