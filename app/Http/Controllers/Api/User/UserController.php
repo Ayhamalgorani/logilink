@@ -194,7 +194,6 @@ class UserController extends Controller
     {
         $order = Order::findOrFail($id);
 
-        // Check if the order is not already confirmed
         if ($order->status !== 'active') {
             $order->update(['status' => 'active']);
 
