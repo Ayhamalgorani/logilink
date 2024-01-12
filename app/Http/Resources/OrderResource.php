@@ -14,10 +14,10 @@ class OrderResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $images = [];
-        foreach ($this?->images as $image) {
-            $images[] = asset('storage/images/' . $image);
-        }
+        // $images = [];
+        // foreach ($this?->images as $image) {
+        //     $images[] = asset('storage/images/' . $image);
+        // }
 
 
         
@@ -29,7 +29,7 @@ class OrderResource extends JsonResource
             'time' => $this->time,
             'description' => $this->description,
             'status' => $this->status,
-            'images' => $images,
+            'images' => $this->images,
         ];
     }
 }
