@@ -75,15 +75,14 @@ Route::middleware(['auth:sanctum'])
 
 
             });
-    });
-
+            
 Route::controller(AppController::class)
-    ->group(function () {
-        // Route::post('/worker_profile/{service?}', 'getWorkersByService');
-        Route::get('/services', 'getServices');
-        Route::get('/countries', 'getCountries');
-        Route::get('/settings', 'getSettings');
-        Route::post('/contact_us', 'creatMessage');
-        Route::get('/notification', 'getNotification');
+->group(function () {
+    Route::get('/services', 'getServices');
+    Route::get('/countries', 'getCountries');
+    Route::get('/settings', 'getSettings');
+    Route::post('/contact_us', 'creatMessage');
+    Route::get('/notification', 'getNotification');
 
+});
     });
