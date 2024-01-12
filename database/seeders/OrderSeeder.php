@@ -16,114 +16,171 @@ class OrderSeeder extends Seeder
     {
         DB::table('orders')->insert(
             [
-                "user_id" => 1,
+                "user_id" => 2,
                 "service_id" => 1,
                 "location" => 'amman',
-                "time" => '19',
+                "time" => '1',
                 "date" => '2015-05-17',
                 "description" => 'test test',
                 'images' => json_encode([
-                    asset('public/img/test.jpg'),
+                    '1sZm0oM5wDyXuKbgp4DFqF48fJyKiBr0fE4kWZ48.jpg',
                 ]),            
                 ]
         );
         DB::table('orders')->insert(
             [
-                "user_id" => 1,
+                "user_id" => 2,
+                "service_id" => 2,
+                "location" => 'amman',
+                "time" => '2',
+                "date" => '2015-05-17',
+                "description" => 'test test',
+                'images' => json_encode([
+                    '1sZm0oM5wDyXuKbgp4DFqF48fJyKiBr0fE4kWZ48.jpg',
+
+                ]),            
+            ]
+        );
+        DB::table('orders')->insert(
+            [
+                "user_id" => 2,
+                "service_id" => 3,
+                "location" => 'amman',
+                "time" => '3',
+                "date" => '2015-05-17',
+                "description" => 'test test',
+                'images' => json_encode([
+                    '1sZm0oM5wDyXuKbgp4DFqF48fJyKiBr0fE4kWZ48.jpg',
+
+                ]),            
+            ]
+        );
+        DB::table('orders')->insert(
+            [
+                "user_id" => 2,
+                "service_id" => 4,
+                "location" => 'amman',
+                "time" => '4',
+                "date" => '2015-05-17',
+                "description" => 'test test',
+                'images' => json_encode([
+                    '1sZm0oM5wDyXuKbgp4DFqF48fJyKiBr0fE4kWZ48.jpg',
+
+                ]),            
+            ]
+        );
+        DB::table('orders')->insert(
+            [
+                "user_id" => 2,
+                "service_id" => 5,
+                "location" => 'amman',
+                "time" => '5',
+                "date" => '2015-05-17',
+                "description" => 'test test',
+                'images' => json_encode([
+                    '1sZm0oM5wDyXuKbgp4DFqF48fJyKiBr0fE4kWZ48.jpg',
+
+                ]),            
+            ]
+        );
+        DB::table('orders')->insert(
+            [
+                "user_id" => 2,
+                "service_id" => 6,
+                "location" => 'amman',
+                "time" => '6',
+                "date" => '2015-05-17',
+                "description" => 'test test',
+                'images' => json_encode([
+                    '1sZm0oM5wDyXuKbgp4DFqF48fJyKiBr0fE4kWZ48.jpg',
+
+                ]),            
+            ]
+        );
+        
+        DB::table('orders')->insert(
+            [
+                "user_id" => 3,
                 "service_id" => 1,
                 "location" => 'amman',
-                "time" => '19',
+                "time" => '7',
                 "date" => '2015-05-17',
                 "description" => 'test test',
                 'images' => json_encode([
-                    asset('public/img/test.jpg'),
-
+                    '1sZm0oM5wDyXuKbgp4DFqF48fJyKiBr0fE4kWZ48.jpg',
                 ]),            
-            ]
+                ]
         );
         DB::table('orders')->insert(
             [
-                "user_id" => 1,
+                "user_id" => 3,
                 "service_id" => 2,
                 "location" => 'amman',
-                "time" => '19',
+                "time" => '8',
                 "date" => '2015-05-17',
                 "description" => 'test test',
                 'images' => json_encode([
-                    asset('public/img/test.jpg'),
+                    '1sZm0oM5wDyXuKbgp4DFqF48fJyKiBr0fE4kWZ48.jpg',
 
                 ]),            
             ]
         );
         DB::table('orders')->insert(
             [
-                "user_id" => 1,
-                "service_id" => 2,
-                "location" => 'amman',
-                "time" => '19',
-                "date" => '2015-05-17',
-                "description" => 'test test',
-                'images' => json_encode([
-                    asset('public/img/test.jpg'),
-
-                ]),            
-            ]
-        );
-        DB::table('orders')->insert(
-            [
-                "user_id" => 1,
+                "user_id" => 3,
                 "service_id" => 3,
                 "location" => 'amman',
-                "time" => '19',
+                "time" => '9',
                 "date" => '2015-05-17',
                 "description" => 'test test',
                 'images' => json_encode([
-                    asset('public/img/test.jpg'),
+                    '1sZm0oM5wDyXuKbgp4DFqF48fJyKiBr0fE4kWZ48.jpg',
 
                 ]),            
             ]
         );
         DB::table('orders')->insert(
             [
-                "user_id" => 1,
-                "service_id" => 3,
-                "location" => 'amman',
-                "time" => '19',
-                "date" => '2015-05-17',
-                "description" => 'test test',
-                'images' => json_encode([
-                    asset('public/img/test.jpg'),
-
-                ]),            
-            ]
-        );
-        DB::table('orders')->insert(
-            [
-                "user_id" => 1,
+                "user_id" => 3,
                 "service_id" => 4,
                 "location" => 'amman',
-                "time" => '19',
+                "time" => '10',
                 "date" => '2015-05-17',
                 "description" => 'test test',
                 'images' => json_encode([
-                    asset('public/img/test.jpg'),
+                    '1sZm0oM5wDyXuKbgp4DFqF48fJyKiBr0fE4kWZ48.jpg',
+                ]),            
+            ]
+        );
+        DB::table('orders')->insert(
+            [
+                "user_id" => 3,
+                "service_id" => 5,
+                "location" => 'amman',
+                "time" => '11',
+                "date" => '2015-05-17',
+                "description" => 'test test',
+                'images' => json_encode([
+                    '1sZm0oM5wDyXuKbgp4DFqF48fJyKiBr0fE4kWZ48.jpg', 
 
                 ]),            
             ]
         );
         DB::table('orders')->insert(
             [
-                "user_id" => 1,
-                "service_id" => 4,
+                "user_id" => 3,
+                "service_id" => 6,
                 "location" => 'amman',
                 "time" => '19',
                 "date" => '2015-05-17',
                 "description" => 'test test',
                 'images' => json_encode([
-                    asset('public/img/test.jpg'),
+                    '1sZm0oM5wDyXuKbgp4DFqF48fJyKiBr0fE4kWZ48.jpg',
 
                 ]),            
             ]
         );
+       
+      
     }
 }
